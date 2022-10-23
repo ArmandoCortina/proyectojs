@@ -2,6 +2,8 @@ let producto = parseInt(prompt('Que produto quieres comprar: 1.Playera - 2.Taza 
 let seguirComprando = true
 let total = 0
 let decision
+let porDescuento = 0
+
 
 //operaciones
 // productos: playera(200) taza(50) termo(150) cojin(100) sudadera(300)
@@ -27,4 +29,16 @@ while (seguirComprando === true){
     }
 }
 
-alert (`El total de tu compra es ${total}`)
+const totalConDescuento = descuento(total)
+
+alert (`El total de tu compra es ${total}, si realizas tu compra obtendras un descuento del ${porDescuento}%`)
+
+function descuento(valor) {
+    if (valor <= 300) {
+        porDescuento = 5
+    } else if (valor > 300 && valor <= 500) {
+        porDescuento = 10
+    } else if (valor > 500) {
+        porDescuento = 15 
+    }
+    }
