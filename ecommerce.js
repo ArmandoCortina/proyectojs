@@ -6,18 +6,34 @@ let decision
 //operaciones
 // productos: playera(200) taza(50) termo(150) cojin(100) sudadera(300)
 
-while (seguirComprando === true){
-    if (producto === 1) {
-        total = total + 200
-    } else if (producto === 2) {
-        total = total + 50
-    } else if (producto === 3) {
-        total = total + 150
-    } else if (producto === 4) {
-        total = total + 100
-    } else if (producto === 5) {
-        total = total + 300
+// arreglo de productos
+const productosArray = []
+
+//clase de prodcutos
+class nuevoProducto {
+    constructor(id,nombre,precio,stock){
+        this.id = id
+        this.nombre = nombre
+        this.precio = precio
+        this.stock = stock
     }
+}
+
+const playera = new nuevoProducto(1,'playera',200,10);
+productosArray.push(playera);
+const taza = new nuevoProducto(2,'taza',50,20);
+productosArray.push(taza);
+const termo = new nuevoProducto(3,'termo',150,20);
+productosArray.push(termo);
+const cojin = new nuevoProducto(4,'cojin',100,15);
+productosArray.push(cojin);
+const sudadera = new nuevoProducto(5,'sudadera',300,10);
+productosArray.push(sudadera);
+
+
+
+while (seguirComprando === true){
+    total = total + productosArray[producto-1].precio
 
     decision = parseInt(prompt('Desea seguir comprando? 1.Si - 2.No'))
     if (decision === 1) {
