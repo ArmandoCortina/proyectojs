@@ -1,12 +1,32 @@
-let producto = parseInt(prompt('Que produto quieres comprar: 1.Playera - 2.Taza - 3.Termo - 4.Cojin - 5.Sudadera'))
-let seguirComprando = true
-let total = 0
-let decision
 
-//operaciones
-// productos: playera(200) taza(50) termo(150) cojin(100) sudadera(300)
+// storage y json ejemplo.
 
-// arreglo de productos
+const formularioUsuario = document.getElementById('formulario')
+const titulo = document.getElementById('titulo')
+const nombreUsuario = document.getElementById('nombre')
+const apellidoUsuario = document.getElementById('apellido')
+
+// guardar info del usuario en objeto
+const infoUsuario = {}
+
+
+// evento submit
+formularioUsuario.onsubmit = (e) =>{
+    infoUsuario.nombre = nombreUsuario.value
+    infoUsuario.apellido = apellidoUsuario.value
+    localStorage.setItem('infoUsuario',JSON.stringify(infoUsuario))
+}
+
+
+const infoUsuarioStorage = JSON.parse(localStorage.getItem('infoUsuario'))
+console.log(infoUsuarioStorage)
+if(infoUsuarioStorage.nombre !== "" || infoUsuarioStorage.apellido !== ""){
+    titulo.innerText = `Hola ${infoUsuarioStorage.nombre} ${infoUsuarioStorage.apellido}, bienvenido de vuelta`
+}
+
+
+
+//-------------- arreglo de productos----------------
 const productosArray = []
 
 //clase de prodcutos
@@ -31,33 +51,40 @@ const sudadera = new nuevoProducto(5,'sudadera',300,10);
 productosArray.push(sudadera);
 
 
+//manipular dom
 
-while (seguirComprando === true){
-    total = total + productosArray[producto-1].precio
+const selectProd = document.getElementById('lista')
 
-    decision = parseInt(prompt('Desea seguir comprando? 1.Si - 2.No'))
-    if (decision === 1) {
-        producto = parseInt(prompt('Que produto quieres comprar: 1.Playera - 2.Taza - 3.Termo - 4.Cojin - 5.Sudadera'))
-    } else {
-        seguirComprando = false
-    }
+productosArray.forEach(elemento=>{
+    const optionProd = document.createElement('option')
+    optionProd.innerText = `${elemento.nombre}: $${elemento.precio}`
+    optionProd.setAttribute('id',`${elemento.id}`)
+    selectProd.append(optionProd)
+})
+
+
+
+//carrito
+const carrito = []
+
+const botonIngresar = document.getElementById('ingresarProd')
+const finalizarCompra = document.getElementById('finalizar')
+
+botonIngresar.onclick = () => {
+    const indexProd = selectProd.selectedIndex
+    const productoSeleccionado = productosArray[indexProd]
+    carrito.push(productoSeleccionado)
 }
 
-const totalCompraConDescuento = descuento(total)
+// finalizar compra
 
-alert (`El total de tu compra es ${total}, si realizas tu compra en este momento obtendras un descuento, el total de tu compra seria de ${totalCompraConDescuento}`)
-
-function descuento(valor) {
-    let descuento = 0
-    if (valor <= 300) {
-        descuento = 5
-    } else if (valor > 300 && valor <= 500) {
-        descuento = 10
-
-    } else if (valor > 500) {
-        descuento = 15 
-    }
-    let valorDescuento = valor * (descuento / 100)
-    let valorFinal = valor - valorDescuento
-    return valorFinal
-    }
+finalizarCompra.onclick = () => {
+    console.log(carrito)
+    let total = 0
+    carrito.forEach((prod) => {
+    total = total + prod.precio
+    })
+    alert(
+    `Escogiste ${carrito.length} productos y el total de la compra es de ${total}`
+    )
+}
